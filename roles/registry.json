@@ -1,0 +1,242 @@
+[
+  {
+    "slug": "cto-dsi",
+    "name": "CTO / DSI",
+    "department": "direction",
+    "folder": "direction & management/CTO - DSI",
+    "keywords": ["architecture", "strategy", "tech stack", "enterprise", "large scale"],
+    "min_size": "large",
+    "is_manager": true,
+    "manager_priority": 2
+  },
+  {
+    "slug": "responsable-si",
+    "name": "Responsable SI",
+    "department": "direction",
+    "folder": "direction & management/RESPONSABLE SI",
+    "keywords": ["IT operations", "vendor", "procurement", "IT planning"],
+    "min_size": "large",
+    "is_manager": false,
+    "manager_priority": 0
+  },
+  {
+    "slug": "chef-de-projets",
+    "name": "Chef de Projets",
+    "department": "direction",
+    "folder": "direction & management/CHEF DE PROJECTS",
+    "keywords": ["project", "planning", "timeline", "coordination", "management"],
+    "min_size": "small",
+    "is_manager": true,
+    "manager_priority": 1
+  },
+  {
+    "slug": "scrum-master",
+    "name": "Scrum Master",
+    "department": "direction",
+    "folder": "direction & management/SCRUM MASTER",
+    "keywords": ["agile", "scrum", "sprint", "kanban", "standup"],
+    "min_size": "medium",
+    "is_manager": false,
+    "manager_priority": 0
+  },
+  {
+    "slug": "tech-lead",
+    "name": "Tech Lead",
+    "department": "developpement",
+    "folder": "DEVELOPPEMENT/TECH LEAD",
+    "keywords": ["code review", "architecture", "patterns", "standards"],
+    "min_size": "medium",
+    "is_manager": false,
+    "manager_priority": 0
+  },
+  {
+    "slug": "ux-ui-designer",
+    "name": "UX/UI Designer",
+    "department": "developpement",
+    "folder": "DEVELOPPEMENT/UX-UI DESIGNER",
+    "keywords": ["design", "UI", "UX", "wireframe", "mockup", "figma", "user interface"],
+    "min_size": "small",
+    "is_manager": false,
+    "manager_priority": 0
+  },
+  {
+    "slug": "frontend",
+    "name": "Frontend Developer",
+    "department": "developpement",
+    "folder": "DEVELOPPEMENT/FRONTEND",
+    "keywords": ["frontend", "react", "vue", "angular", "CSS", "HTML", "responsive", "web"],
+    "min_size": "small",
+    "is_manager": false,
+    "manager_priority": 0
+  },
+  {
+    "slug": "backend",
+    "name": "Backend Developer",
+    "department": "developpement",
+    "folder": "DEVELOPPEMENT/BACKEND",
+    "keywords": ["backend", "API", "REST", "GraphQL", "server", "auth", "business logic"],
+    "min_size": "small",
+    "is_manager": false,
+    "manager_priority": 0
+  },
+  {
+    "slug": "mobile-dev",
+    "name": "Mobile Developer",
+    "department": "developpement",
+    "folder": "DEVELOPPEMENT/MOBILE DEV",
+    "keywords": ["mobile", "iOS", "android", "react native", "flutter", "app"],
+    "min_size": "small",
+    "is_manager": false,
+    "manager_priority": 0
+  },
+  {
+    "slug": "devops-sre",
+    "name": "DevOps / SRE",
+    "department": "developpement",
+    "folder": "DEVELOPPEMENT/DEVOPS - SRE",
+    "keywords": ["devops", "CI/CD", "docker", "kubernetes", "deploy", "monitoring", "pipeline"],
+    "min_size": "medium",
+    "is_manager": false,
+    "manager_priority": 0
+  },
+  {
+    "slug": "qa-testeur",
+    "name": "QA / Testeur",
+    "department": "developpement",
+    "folder": "DEVELOPPEMENT/QA - TESTEUR",
+    "keywords": ["test", "QA", "quality", "regression", "automation test"],
+    "min_size": "medium",
+    "is_manager": false,
+    "manager_priority": 0
+  },
+  {
+    "slug": "dba",
+    "name": "DBA",
+    "department": "developpement",
+    "folder": "DEVELOPPEMENT/DBA",
+    "keywords": ["database", "SQL", "migration", "optimization", "postgres", "mysql", "mongo"],
+    "min_size": "medium",
+    "is_manager": false,
+    "manager_priority": 0
+  },
+  {
+    "slug": "rssi-ciso",
+    "name": "RSSI / CISO",
+    "department": "cybersecurite",
+    "folder": "CYBERSECURITE/RSSI - CISCO",
+    "keywords": ["security policy", "risk assessment", "CISO", "security strategy"],
+    "min_size": "large",
+    "is_manager": false,
+    "manager_priority": 0
+  },
+  {
+    "slug": "security-engineer",
+    "name": "Security Engineer",
+    "department": "cybersecurite",
+    "folder": "CYBERSECURITE/SECURITY ENG",
+    "keywords": ["hardening", "WAF", "encryption", "DevSecOps", "security implementation"],
+    "min_size": "medium",
+    "is_manager": false,
+    "manager_priority": 0
+  },
+  {
+    "slug": "soc-analyst",
+    "name": "SOC Analyst",
+    "department": "cybersecurite",
+    "folder": "CYBERSECURITE/SOC ANALYST",
+    "keywords": ["SIEM", "monitoring", "alert", "SOC", "log analysis"],
+    "min_size": "large",
+    "is_manager": false,
+    "manager_priority": 0
+  },
+  {
+    "slug": "pentester",
+    "name": "Pentester",
+    "department": "cybersecurite",
+    "folder": "CYBERSECURITE/PENTESTER",
+    "keywords": ["pentest", "vulnerability", "penetration test", "security audit", "OWASP"],
+    "min_size": "medium",
+    "is_manager": false,
+    "manager_priority": 0
+  },
+  {
+    "slug": "grc-compliance",
+    "name": "GRC / Compliance",
+    "department": "cybersecurite",
+    "folder": "CYBERSECURITE/GRC - COMPLIANCE",
+    "keywords": ["compliance", "RGPD", "GDPR", "ISO 27001", "audit", "regulation"],
+    "min_size": "medium",
+    "is_manager": false,
+    "manager_priority": 0
+  },
+  {
+    "slug": "incident-response",
+    "name": "Incident Response",
+    "department": "cybersecurite",
+    "folder": "CYBERSECURITE/INCIDENT REPONSE",
+    "keywords": ["incident", "forensics", "crisis", "breach", "response plan"],
+    "min_size": "large",
+    "is_manager": false,
+    "manager_priority": 0
+  },
+  {
+    "slug": "admin-reseau",
+    "name": "Administrateur Réseau",
+    "department": "infrastructure",
+    "folder": "INFRASTRUCTURE  & SUPPORT/ADMIN REASEAU",
+    "keywords": ["network", "VPN", "VLAN", "firewall", "routing", "switching"],
+    "min_size": "medium",
+    "is_manager": false,
+    "manager_priority": 0
+  },
+  {
+    "slug": "sysadmin",
+    "name": "Sysadmin",
+    "department": "infrastructure",
+    "folder": "INFRASTRUCTURE  & SUPPORT/SYSADMIN",
+    "keywords": ["server", "Active Directory", "backup", "virtualization", "linux admin", "windows server"],
+    "min_size": "medium",
+    "is_manager": false,
+    "manager_priority": 0
+  },
+  {
+    "slug": "cloud-engineer",
+    "name": "Cloud Engineer",
+    "department": "infrastructure",
+    "folder": "INFRASTRUCTURE  & SUPPORT/COUD ENGINEER",
+    "keywords": ["cloud", "AWS", "Azure", "GCP", "terraform", "infrastructure as code"],
+    "min_size": "medium",
+    "is_manager": false,
+    "manager_priority": 0
+  },
+  {
+    "slug": "support-n1-n2",
+    "name": "Support N1/N2",
+    "department": "infrastructure",
+    "folder": "INFRASTRUCTURE  & SUPPORT/SUPPORT N1-N2",
+    "keywords": ["helpdesk", "ticket", "support", "user guide", "FAQ"],
+    "min_size": "medium",
+    "is_manager": false,
+    "manager_priority": 0
+  },
+  {
+    "slug": "support-n3-expert",
+    "name": "Support N3 / Expert Technique",
+    "department": "infrastructure",
+    "folder": "INFRASTRUCTURE  & SUPPORT/SUPPORT N3 - EXPERT TECHNIQUE",
+    "keywords": ["escalation", "advanced troubleshooting", "expert support", "root cause"],
+    "min_size": "large",
+    "is_manager": false,
+    "manager_priority": 0
+  },
+  {
+    "slug": "technicien-poste",
+    "name": "Technicien Poste de Travail",
+    "department": "infrastructure",
+    "folder": "INFRASTRUCTURE  & SUPPORT/TECHNICIEN POSTE DE TRAVAIL",
+    "keywords": ["workstation", "imaging", "inventory", "deployment", "desktop"],
+    "min_size": "large",
+    "is_manager": false,
+    "manager_priority": 0
+  }
+]
