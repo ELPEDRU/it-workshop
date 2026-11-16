@@ -1,0 +1,384 @@
+{
+  "sources": {
+    "superpowers": {
+      "url": "https://github.com/obra/superpowers",
+      "license": "MIT",
+      "author": "Jesse Vincent"
+    },
+    "engineering": {
+      "url": "https://github.com/anthropics/knowledge-work-plugins",
+      "license": "Apache-2.0",
+      "author": "Anthropic"
+    },
+    "anthropic-skills": {
+      "url": "https://github.com/anthropics/skills",
+      "license": "Apache-2.0 (per-skill LICENSE.txt)",
+      "author": "Anthropic"
+    },
+    "vercel": {
+      "url": "https://github.com/vercel/vercel-plugin",
+      "license": "Apache-2.0",
+      "author": "Vercel"
+    },
+    "vercel-labs": {
+      "url": "https://github.com/vercel-labs/agent-skills",
+      "license": "MIT (stated in upstream README)",
+      "author": "Vercel Labs"
+    },
+    "gsap": {
+      "url": "https://github.com/greensock/gsap-skills",
+      "license": "MIT",
+      "author": "GreenSock"
+    },
+    "taste-skill": {
+      "url": "https://github.com/Leonxlnx/taste-skill",
+      "license": "MIT",
+      "author": "Leonxlnx"
+    },
+    "taste-skill-classics": {
+      "url": "https://github.com/Leonxlnx/taste-skill-classics",
+      "license": "MIT",
+      "author": "Leonxlnx"
+    },
+    "imagegen-skills": {
+      "url": "https://github.com/Leonxlnx/imagegen-skills",
+      "license": "MIT",
+      "author": "Leonxlnx"
+    },
+    "ui-ux-pro-max": {
+      "url": "https://github.com/nextlevelbuilder/ui-ux-pro-max-skill",
+      "license": "MIT",
+      "author": "Next Level Builder"
+    },
+    "emilkowalski": {
+      "url": "https://github.com/emilkowalski/skill",
+      "license": "MIT",
+      "author": "Emil Kowalski"
+    },
+    "minimax": {
+      "url": "https://github.com/MiniMax-AI/skills",
+      "license": "MIT",
+      "author": "MiniMax"
+    },
+    "everything-claude-code": {
+      "url": "https://github.com/affaan-m/everything-claude-code",
+      "license": "MIT",
+      "author": "Affaan Mustafa"
+    },
+    "playwright": {
+      "url": "https://github.com/microsoft/playwright",
+      "license": "Apache-2.0",
+      "author": "Microsoft"
+    },
+    "orca": {
+      "url": "https://github.com/stablyai/orca",
+      "license": "MIT",
+      "author": "Lovecast Inc."
+    },
+    "karpathy": {
+      "url": "https://github.com/forrestchang/andrej-karpathy-skills",
+      "license": "MIT (stated in upstream README)",
+      "author": "forrestchang"
+    },
+    "shadcn": {
+      "url": "https://github.com/shadcn-ui/ui",
+      "license": "MIT",
+      "author": "shadcn"
+    },
+    "shadcn-improve": {
+      "url": "https://github.com/shadcn/improve",
+      "license": "MIT",
+      "author": "shadcn"
+    }
+  },
+  "skills": {
+    "ai-sdk": {
+      "path": "skills/vercel/ai-sdk/SKILL.md",
+      "source": "vercel"
+    },
+    "api-review": {
+      "path": "skills/playwright/api-review/SKILL.md",
+      "source": "playwright"
+    },
+    "architecture": {
+      "path": "skills/engineering/architecture/SKILL.md",
+      "source": "engineering"
+    },
+    "backend-patterns": {
+      "path": "skills/everything-claude-code/backend-patterns/SKILL.md",
+      "source": "everything-claude-code"
+    },
+    "brainstorming": {
+      "path": "skills/superpowers/brainstorming/SKILL.md",
+      "source": "superpowers"
+    },
+    "clickhouse-io": {
+      "path": "skills/everything-claude-code/clickhouse-io/SKILL.md",
+      "source": "everything-claude-code"
+    },
+    "code-review": {
+      "path": "skills/engineering/code-review/SKILL.md",
+      "source": "engineering"
+    },
+    "coding-standards": {
+      "path": "skills/everything-claude-code/coding-standards/SKILL.md",
+      "source": "everything-claude-code"
+    },
+    "debug": {
+      "path": "skills/engineering/debug/SKILL.md",
+      "source": "engineering"
+    },
+    "deploy-checklist": {
+      "path": "skills/engineering/deploy-checklist/SKILL.md",
+      "source": "engineering"
+    },
+    "deployments-cicd": {
+      "path": "skills/vercel/deployments-cicd/SKILL.md",
+      "source": "vercel"
+    },
+    "design-taste-frontend": {
+      "path": "skills/taste-skill/design-taste-frontend/SKILL.md",
+      "source": "taste-skill"
+    },
+    "design-taste-frontend-v1": {
+      "path": "skills/taste-skill-classics/design-taste-frontend-v1/SKILL.md",
+      "source": "taste-skill-classics"
+    },
+    "dispatching-parallel-agents": {
+      "path": "skills/superpowers/dispatching-parallel-agents/SKILL.md",
+      "source": "superpowers"
+    },
+    "documentation": {
+      "path": "skills/engineering/documentation/SKILL.md",
+      "source": "engineering"
+    },
+    "executing-plans": {
+      "path": "skills/superpowers/executing-plans/SKILL.md",
+      "source": "superpowers"
+    },
+    "finishing-a-development-branch": {
+      "path": "skills/superpowers/finishing-a-development-branch/SKILL.md",
+      "source": "superpowers"
+    },
+    "frontend-design": {
+      "path": "skills/anthropic-skills/frontend-design/SKILL.md",
+      "source": "anthropic-skills"
+    },
+    "frontend-dev": {
+      "path": "skills/minimax/frontend-dev/SKILL.md",
+      "source": "minimax"
+    },
+    "frontend-patterns": {
+      "path": "skills/everything-claude-code/frontend-patterns/SKILL.md",
+      "source": "everything-claude-code"
+    },
+    "frontend-slides": {
+      "path": "skills/everything-claude-code/frontend-slides/SKILL.md",
+      "source": "everything-claude-code"
+    },
+    "gsap-core": {
+      "path": "skills/gsap/gsap-core/SKILL.md",
+      "source": "gsap"
+    },
+    "gsap-frameworks": {
+      "path": "skills/gsap/gsap-frameworks/SKILL.md",
+      "source": "gsap"
+    },
+    "gsap-performance": {
+      "path": "skills/gsap/gsap-performance/SKILL.md",
+      "source": "gsap"
+    },
+    "gsap-plugins": {
+      "path": "skills/gsap/gsap-plugins/SKILL.md",
+      "source": "gsap"
+    },
+    "gsap-react": {
+      "path": "skills/gsap/gsap-react/SKILL.md",
+      "source": "gsap"
+    },
+    "gsap-scrolltrigger": {
+      "path": "skills/gsap/gsap-scrolltrigger/SKILL.md",
+      "source": "gsap"
+    },
+    "gsap-timeline": {
+      "path": "skills/gsap/gsap-timeline/SKILL.md",
+      "source": "gsap"
+    },
+    "gsap-utils": {
+      "path": "skills/gsap/gsap-utils/SKILL.md",
+      "source": "gsap"
+    },
+    "high-end-visual-design": {
+      "path": "skills/taste-skill-classics/high-end-visual-design/SKILL.md",
+      "source": "taste-skill-classics"
+    },
+    "image-to-code": {
+      "path": "skills/imagegen-skills/image-to-code/SKILL.md",
+      "source": "imagegen-skills"
+    },
+    "improve": {
+      "path": "skills/shadcn-improve/improve/SKILL.md",
+      "source": "shadcn-improve"
+    },
+    "incident-response": {
+      "path": "skills/engineering/incident-response/SKILL.md",
+      "source": "engineering"
+    },
+    "industrial-brutalist-ui": {
+      "path": "skills/taste-skill-classics/industrial-brutalist-ui/SKILL.md",
+      "source": "taste-skill-classics"
+    },
+    "karpathy-guidelines": {
+      "path": "skills/karpathy/karpathy-guidelines/SKILL.md",
+      "source": "karpathy"
+    },
+    "minimalist-ui": {
+      "path": "skills/taste-skill-classics/minimalist-ui/SKILL.md",
+      "source": "taste-skill-classics"
+    },
+    "nextjs": {
+      "path": "skills/vercel/nextjs/SKILL.md",
+      "source": "vercel"
+    },
+    "orca-cli": {
+      "path": "skills/orca/orca-cli/SKILL.md",
+      "source": "orca"
+    },
+    "orca-computer-use": {
+      "path": "skills/orca/orca-computer-use/SKILL.md",
+      "source": "orca"
+    },
+    "orca-jira": {
+      "path": "skills/orca/orca-jira/SKILL.md",
+      "source": "orca"
+    },
+    "orca-linear": {
+      "path": "skills/orca/orca-linear/SKILL.md",
+      "source": "orca"
+    },
+    "playwright-audit-deps": {
+      "path": "skills/playwright/playwright-audit-deps/SKILL.md",
+      "source": "playwright"
+    },
+    "playwright-dev": {
+      "path": "skills/playwright/playwright-dev/SKILL.md",
+      "source": "playwright"
+    },
+    "playwright-devops": {
+      "path": "skills/playwright/playwright-devops/SKILL.md",
+      "source": "playwright"
+    },
+    "playwright-release-notes": {
+      "path": "skills/playwright/playwright-release-notes/SKILL.md",
+      "source": "playwright"
+    },
+    "playwright-test-results": {
+      "path": "skills/playwright/playwright-test-results/SKILL.md",
+      "source": "playwright"
+    },
+    "receiving-code-review": {
+      "path": "skills/superpowers/receiving-code-review/SKILL.md",
+      "source": "superpowers"
+    },
+    "requesting-code-review": {
+      "path": "skills/superpowers/requesting-code-review/SKILL.md",
+      "source": "superpowers"
+    },
+    "review-animations": {
+      "path": "skills/emilkowalski/review-animations/SKILL.md",
+      "source": "emilkowalski"
+    },
+    "security-review": {
+      "path": "skills/everything-claude-code/security-review/SKILL.md",
+      "source": "everything-claude-code"
+    },
+    "shadcn": {
+      "path": "skills/vercel/shadcn/SKILL.md",
+      "source": "vercel"
+    },
+    "shadcn-ui": {
+      "path": "skills/shadcn/shadcn-ui/SKILL.md",
+      "source": "shadcn"
+    },
+    "shader-dev": {
+      "path": "skills/minimax/shader-dev/SKILL.md",
+      "source": "minimax"
+    },
+    "standup": {
+      "path": "skills/engineering/standup/SKILL.md",
+      "source": "engineering"
+    },
+    "subagent-driven-development": {
+      "path": "skills/superpowers/subagent-driven-development/SKILL.md",
+      "source": "superpowers"
+    },
+    "system-design": {
+      "path": "skills/engineering/system-design/SKILL.md",
+      "source": "engineering"
+    },
+    "systematic-debugging": {
+      "path": "skills/superpowers/systematic-debugging/SKILL.md",
+      "source": "superpowers"
+    },
+    "tdd-workflow": {
+      "path": "skills/everything-claude-code/tdd-workflow/SKILL.md",
+      "source": "everything-claude-code"
+    },
+    "tech-debt": {
+      "path": "skills/engineering/tech-debt/SKILL.md",
+      "source": "engineering"
+    },
+    "test-driven-development": {
+      "path": "skills/superpowers/test-driven-development/SKILL.md",
+      "source": "superpowers"
+    },
+    "testing-strategy": {
+      "path": "skills/engineering/testing-strategy/SKILL.md",
+      "source": "engineering"
+    },
+    "turbopack": {
+      "path": "skills/vercel/turbopack/SKILL.md",
+      "source": "vercel"
+    },
+    "ui-ux-pro-max": {
+      "path": "skills/ui-ux-pro-max/ui-ux-pro-max/SKILL.md",
+      "source": "ui-ux-pro-max"
+    },
+    "using-git-worktrees": {
+      "path": "skills/superpowers/using-git-worktrees/SKILL.md",
+      "source": "superpowers"
+    },
+    "vercel-cli": {
+      "path": "skills/vercel/vercel-cli/SKILL.md",
+      "source": "vercel"
+    },
+    "vercel-functions": {
+      "path": "skills/vercel/vercel-functions/SKILL.md",
+      "source": "vercel"
+    },
+    "vercel-storage": {
+      "path": "skills/vercel/vercel-storage/SKILL.md",
+      "source": "vercel"
+    },
+    "verification-before-completion": {
+      "path": "skills/superpowers/verification-before-completion/SKILL.md",
+      "source": "superpowers"
+    },
+    "web-artifacts-builder": {
+      "path": "skills/anthropic-skills/web-artifacts-builder/SKILL.md",
+      "source": "anthropic-skills"
+    },
+    "web-design-guidelines": {
+      "path": "skills/vercel-labs/web-design-guidelines/SKILL.md",
+      "source": "vercel-labs"
+    },
+    "writing-guidelines": {
+      "path": "skills/vercel-labs/writing-guidelines/SKILL.md",
+      "source": "vercel-labs"
+    },
+    "writing-plans": {
+      "path": "skills/superpowers/writing-plans/SKILL.md",
+      "source": "superpowers"
+    }
+  }
+}

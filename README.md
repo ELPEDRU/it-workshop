@@ -173,9 +173,44 @@ flowchart LR
 | Security roles | `security-audit`, `security-review`, `engineering:incident-response` |
 | Everyone | `superpowers:verification-before-completion`, `karpathy-guidelines`, `coding-standards` |
 
-The full map covers all 24 roles and lives in [`roles/skills-map.json`](roles/skills-map.json). Skills that are not installed are skipped and reported, so the team still runs on a bare setup. Skills that are installed but not in the map are matched to roles by their description.
+The full map covers all 24 roles and lives in [`roles/skills-map.json`](roles/skills-map.json). Skills that are installed but not in the map are matched to roles by their description.
 
-The skills themselves are not copied into this repo: they belong to their own authors and are installed from their own sources.
+### Bundled skills
+
+72 skills ship inside this repo in [`skills/`](skills/), so the team works out of the box. If a skill is not installed on your machine, the agent reads the bundled copy instead. To install them all permanently:
+
+```bash
+bash ~/.claude/skills/it-workshop/scripts/install-skills.sh
+```
+
+---
+
+## Credits
+
+IT Workshop uses skills made by other people. I did not write them: they are included unchanged, each under its own original license, and all credit goes to their authors.
+
+| Source | Author | License | Skills used |
+|--------|--------|---------|-------------|
+| [superpowers](https://github.com/obra/superpowers) | Jesse Vincent | MIT | 12 |
+| [engineering](https://github.com/anthropics/knowledge-work-plugins) | Anthropic | Apache-2.0 | 10 |
+| [anthropic-skills](https://github.com/anthropics/skills) | Anthropic | Apache-2.0 (per-skill LICENSE.txt) | 2 |
+| [vercel](https://github.com/vercel/vercel-plugin) | Vercel | Apache-2.0 | 8 |
+| [vercel-labs](https://github.com/vercel-labs/agent-skills) | Vercel Labs | MIT (stated in upstream README) | 2 |
+| [gsap](https://github.com/greensock/gsap-skills) | GreenSock | MIT | 8 |
+| [taste-skill](https://github.com/Leonxlnx/taste-skill) | Leonxlnx | MIT | 1 |
+| [taste-skill-classics](https://github.com/Leonxlnx/taste-skill-classics) | Leonxlnx | MIT | 4 |
+| [imagegen-skills](https://github.com/Leonxlnx/imagegen-skills) | Leonxlnx | MIT | 1 |
+| [ui-ux-pro-max](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) | Next Level Builder | MIT | 1 |
+| [emilkowalski](https://github.com/emilkowalski/skill) | Emil Kowalski | MIT | 1 |
+| [minimax](https://github.com/MiniMax-AI/skills) | MiniMax | MIT | 2 |
+| [everything-claude-code](https://github.com/affaan-m/everything-claude-code) | Affaan Mustafa | MIT | 7 |
+| [playwright](https://github.com/microsoft/playwright) | Microsoft | Apache-2.0 | 6 |
+| [orca](https://github.com/stablyai/orca) | Lovecast Inc. | MIT | 4 |
+| [karpathy](https://github.com/forrestchang/andrej-karpathy-skills) | forrestchang | MIT (stated in upstream README) | 1 |
+| [shadcn](https://github.com/shadcn-ui/ui) | shadcn | MIT | 1 |
+| [shadcn-improve](https://github.com/shadcn/improve) | shadcn | MIT | 1 |
+
+Full list per source: [`skills/README.md`](skills/README.md). The MIT license of this repo covers IT Workshop itself only, not the bundled skills.
 
 ---
 
@@ -343,15 +378,19 @@ it-workshop/
 │   ├── developpement/          # 8 development role definitions
 │   ├── cybersecurite/          # 6 security role definitions
 │   └── infrastructure/         # 6 infrastructure role definitions
+├── skills/                     # Bundled third-party skills (own licenses)
+│   ├── index.json              # Name → path of every bundled skill
+│   └── README.md               # Credits and licenses
 ├── templates/
 │   ├── PROJECT-BRIEF.md        # Project brief template
 │   └── TEAM.md                 # Team roster template
 └── scripts/
     ├── scaffold.sh             # Workspace scaffolding script
-    └── detect-skills.sh        # Lists installed skills
+    ├── detect-skills.sh        # Lists installed skills
+    └── install-skills.sh       # Installs the bundled skills
 ```
 
-24 role definitions + orchestrator + registry + skill map + 2 templates + 2 scripts.
+24 role definitions + orchestrator + registry + skill map + 2 templates + 3 scripts + 72 bundled skills.
 
 ---
 
@@ -368,7 +407,7 @@ it-workshop/
 
 ## License
 
-[MIT](LICENSE)
+[MIT](LICENSE) for IT Workshop itself. Bundled skills keep their own licenses, see [Credits](#credits).
 
 ---
 

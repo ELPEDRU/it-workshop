@@ -75,10 +75,14 @@ Every agent on the team works with the skills installed in this session, so find
    ```
    Merge these names into the list (a disk name `deploy` and a session name `vercel:deploy` are the same skill).
 3. **Load the role → skill map:** `cat <skill-dir>/roles/skills-map.json`. Each key is a role slug; `_all` applies to every role.
-4. **For each selected role, build its skill list:**
-   - every skill mapped to the role (plus `_all`) that is in the detected list — match on the full name or on the part after the colon
-   - every detected skill that is not in the map but whose description clearly fits the role's job
-5. **Tell the user in one short block:** how many skills were detected, which ones each role gets, and which mapped skills are missing on this machine (these are skipped, the team still works without them).
+4. **Load the bundled skills index:** `cat <skill-dir>/skills/index.json`. It lists every skill shipped inside this skill, with the path to its SKILL.md.
+5. **For each selected role, build its skill list:**
+   - every skill mapped to the role (plus `_all`) that is in the detected list — match on the full name or on the part after the colon. Mark it **installed**.
+   - every mapped skill that is not installed but is in the bundled index. Mark it **bundled** and keep its path `<skill-dir>/<path from index>`.
+   - every detected skill that is not in the map but whose description clearly fits the role's job. Mark it **installed**.
+6. **Tell the user in one short block:** how many skills were detected, how many come from the bundle, which ones each role gets, and which mapped skills are neither installed nor bundled (these are skipped, the team still works without them).
+
+To install the bundled skills permanently, the user can run `bash <skill-dir>/scripts/install-skills.sh` (it never overwrites a skill that already exists).
 
 ## Step 4: Create Workspace
 
@@ -108,9 +112,10 @@ Then append the role's skill list from Step 3 to the end of that SKILL.md:
 ```markdown
 ## Skills
 
-Before starting any task, invoke each skill below that applies to it (Skill tool), and follow it:
+Before starting any task, load each skill below that applies to it, and follow it:
 
-- `<skill-name>` — <one line: when this role uses it>
+- `<skill-name>` (installed) — invoke it with the Skill tool. <one line: when this role uses it>
+- `<skill-name>` (bundled) — read `<absolute path to its SKILL.md>` and follow it. <one line: when this role uses it>
 ```
 
 If a role has no detected skills, write `No extra skills detected — work from this role definition.` under the heading.
@@ -141,7 +146,7 @@ Launch the manager agent as a subagent using the Agent tool:
 Agent({
   name: "<manager-slug>",
   description: "Project manager for <project-name>",
-  prompt: "<contents of the manager's SKILL.md>\n\n---\n\nYou are managing the project '<project-name>'.\n\n<contents of PROJECT-BRIEF.md>\n\n<contents of TEAM.md>\n\nYour workspace is at ~/<project-name>/. Each team member has their own folder with a SKILL.md defining their role. When you need a specialist, dispatch them as a subagent using the Agent tool — read their SKILL.md and include it in full in the prompt so they know their role and which skills to use. Each SKILL.md ends with a Skills section: tell every specialist to invoke the skills that apply to their task before they start, and use your own listed skills the same way.\n\nStart by reading the project brief, then create a plan and begin dispatching agents to execute it. Report progress back to the user."
+  prompt: "<contents of the manager's SKILL.md>\n\n---\n\nYou are managing the project '<project-name>'.\n\n<contents of PROJECT-BRIEF.md>\n\n<contents of TEAM.md>\n\nYour workspace is at ~/<project-name>/. Each team member has their own folder with a SKILL.md defining their role. When you need a specialist, dispatch them as a subagent using the Agent tool — read their SKILL.md and include it in full in the prompt so they know their role and which skills to use. Each SKILL.md ends with a Skills section: tell every specialist to load the skills that apply to their task before they start (Skill tool for installed ones, reading the SKILL.md file for bundled ones), and use your own listed skills the same way.\n\nStart by reading the project brief, then create a plan and begin dispatching agents to execute it. Report progress back to the user."
 })
 ```
 
@@ -162,5 +167,7 @@ The full registry of 24 roles lives at `<skill-dir>/roles/registry.json`.
 - **infrastructure** (6 roles): Admin Réseau, Sysadmin, Cloud Engineer, Support N1-N2, Support N3/Expert, Technicien Poste
 
 Role definitions are at `<skill-dir>/roles/<department>/<slug>.md`.
+
+Bundled third-party skills live in `<skill-dir>/skills/` (index: `skills/index.json`, credits and licenses: `skills/README.md`).
 
 The role → skill map is at `<skill-dir>/roles/skills-map.json`. Add a skill name under a role slug to make that role use it whenever it is installed.
