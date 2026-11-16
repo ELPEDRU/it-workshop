@@ -4,8 +4,8 @@
 
 set -euo pipefail
 
-WORKSPACE="$1"
-SLUGS="$2"
+WORKSPACE="${1:-}"
+SLUGS="${2:-}"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REGISTRY="$SCRIPT_DIR/../roles/registry.json"
 

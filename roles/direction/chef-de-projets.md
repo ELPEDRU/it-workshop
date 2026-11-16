@@ -29,6 +29,7 @@ When acting as manager:
 4. **Dispatch agents** via subagent dispatch, one at a time:
    - Give each agent their task description and acceptance criteria
    - Point them to their SKILL.md and the PROJECT-BRIEF.md
+   - Tell them to invoke the skills listed in the Skills section of their SKILL.md before starting
    - Collect their deliverables and review them
 5. **Track progress** — after each agent completes, update your mental status board
 6. **Report to the user** — summarize what's done, what's in progress, what's next

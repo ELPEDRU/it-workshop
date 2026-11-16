@@ -14,9 +14,10 @@ You tell it what you're building. It does the rest:
 
 1. **Analyzes your project scope** — small, medium, or large
 2. **Picks only the roles you need** from 24 IT specialists across 4 departments
-3. **Creates a full workspace** — one folder per role with agent definitions, templates, and scripts
-4. **Dispatches a manager agent** (CTO or Chef de Projets) who orchestrates the entire team
-5. **You talk to the manager. The manager talks to everyone else.**
+3. **Detects every skill installed in your session** and hands each role the ones that fit its job
+4. **Creates a full workspace** — one folder per role with agent definitions, templates, and scripts
+5. **Dispatches a manager agent** (CTO or Chef de Projets) who orchestrates the entire team
+6. **You talk to the manager. The manager talks to everyone else.**
 
 ```
 You: "I want to build a SaaS platform with user auth, payments, and a mobile app"
@@ -143,6 +144,41 @@ The orchestrator always ensures at least **one manager** and **one dev role** ar
 
 ---
 
+## Skill Detection
+
+IT Workshop does not work alone. At launch it lists every skill available in the session, then gives each agent the ones that match its role.
+
+```mermaid
+flowchart LR
+    Launch([Launch]) --> Detect[Detect installed skills]
+    Detect --> Map[(skills-map.json\nrole to skills)]
+    Map --> Match[Keep the ones installed]
+    Match --> Role[Written into each role's SKILL.md]
+    Role --> Use[Agents invoke them before working]
+
+    style Launch fill:#2d9bf0,color:#fff
+    style Map fill:#7c3aed,color:#fff
+    style Use fill:#10b981,color:#fff
+```
+
+| Role | Example skills it picks up when installed |
+|------|-------------------------------------------|
+| Managers | `superpowers:brainstorming`, `superpowers:writing-plans`, `superpowers:subagent-driven-development` |
+| Tech Lead | `engineering:architecture`, `engineering:code-review`, `pr-feedback-quality-gate` |
+| UX/UI Designer | `ui-ux-pro-max`, `high-end-visual-design`, `motion-design` |
+| Frontend | `shadcn-ui`, the `gsap-*` suite, `threejs`, `vercel:nextjs` |
+| Backend | `backend-patterns`, `api-review`, `vercel:vercel-functions` |
+| QA / Testeur | `playwright-dev`, `tdd-workflow`, `engineering:testing-strategy` |
+| DevOps / SRE | `vercel:deploy`, `vercel:deployments-cicd`, `engineering:deploy-checklist` |
+| Security roles | `security-audit`, `security-review`, `engineering:incident-response` |
+| Everyone | `superpowers:verification-before-completion`, `karpathy-guidelines`, `coding-standards` |
+
+The full map covers all 24 roles and lives in [`roles/skills-map.json`](roles/skills-map.json). Skills that are not installed are skipped and reported, so the team still runs on a bare setup. Skills that are installed but not in the map are matched to roles by their description.
+
+The skills themselves are not copied into this repo: they belong to their own authors and are installed from their own sources.
+
+---
+
 ## Manager Dispatch
 
 ```mermaid
@@ -231,6 +267,7 @@ Each agent's `SKILL.md` contains:
 - **Workflow** — step-by-step working process
 - **Templates** — ready-to-use document templates
 - **Tools & scripts** — commands and utilities they use
+- **Skills** — the installed skills this role must invoke, added at launch
 
 ---
 
@@ -267,8 +304,9 @@ Or describe a project and the skill triggers automatically:
 The skill will:
 1. Ask you to confirm the project name and description
 2. Show you the proposed team for approval
-3. Scaffold the full workspace
-4. Launch the manager agent
+3. Detect your installed skills and assign them to roles
+4. Scaffold the full workspace
+5. Launch the manager agent
 
 ---
 
@@ -300,6 +338,7 @@ it-workshop/
 ├── LICENSE                     # MIT
 ├── roles/
 │   ├── registry.json           # All 24 roles with keywords & metadata
+│   ├── skills-map.json         # Which skills each role uses
 │   ├── direction/              # 4 management role definitions
 │   ├── developpement/          # 8 development role definitions
 │   ├── cybersecurite/          # 6 security role definitions
@@ -308,10 +347,11 @@ it-workshop/
 │   ├── PROJECT-BRIEF.md        # Project brief template
 │   └── TEAM.md                 # Team roster template
 └── scripts/
-    └── scaffold.sh             # Workspace scaffolding script
+    ├── scaffold.sh             # Workspace scaffolding script
+    └── detect-skills.sh        # Lists installed skills
 ```
 
-24 role definitions + orchestrator + registry + 2 templates + scaffold script.
+24 role definitions + orchestrator + registry + skill map + 2 templates + 2 scripts.
 
 ---
 
@@ -320,6 +360,7 @@ it-workshop/
 - **Orchestrator pattern** — one SKILL.md entry point that reads the registry, selects roles, and dispatches the manager
 - **Modular roles** — each of the 24 roles is an independent `.md` file with its own agent definition
 - **JSON registry** — `registry.json` holds all role metadata (keywords, department, min_size, manager priority) for programmatic selection
+- **Skill map** — `skills-map.json` links each role to the skills it should use; detection keeps only the installed ones
 - **Bash scaffold** — `scaffold.sh` creates the workspace directory structure using the registry
 - **Template system** — `PROJECT-BRIEF.md` and `TEAM.md` use `{{PLACEHOLDER}}` substitution
 
@@ -333,4 +374,6 @@ it-workshop/
 
 ## Author
 
-Built by **ELPEDRU** with Claude Code.
+Built by **ELPEDRU**.
+
+— ELPEDRU
