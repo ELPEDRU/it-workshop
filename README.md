@@ -2,7 +2,7 @@
 
 ![Claude Code Skill](https://img.shields.io/badge/Claude%20Code-Skill-7c3aed) ![Roles](https://img.shields.io/badge/roles-24-10b981) ![Departments](https://img.shields.io/badge/departments-4-2d9bf0) ![License](https://img.shields.io/badge/license-MIT-f59e0b)
 
-> **Spin up an entire IT project team in seconds.** Describe your project, and IT Workshop picks the right specialists from 24 agent roles, scaffolds a full workspace, and hands control to a manager agent who orchestrates the whole team.
+> **Spin up an entire IT project team in seconds.** Describe your project, and IT Workshop picks the right specialists from 24 agent roles, becomes the manager, and gives every agent its own session to work in.
 
 A Claude Code skill that generates multi-agent IT project teams.
 
@@ -15,15 +15,15 @@ You tell it what you're building. It does the rest:
 1. **Analyzes your project scope** — small, medium, or large
 2. **Picks only the roles you need** from 24 IT specialists across 4 departments
 3. **Detects every skill installed in your session** and hands each role the ones that fit its job
-4. **Creates a full workspace** — one folder per role with agent definitions, templates, and scripts
-5. **Dispatches a manager agent** (CTO or Chef de Projets) who orchestrates the entire team
-6. **You talk to the manager. The manager talks to everyone else.**
+4. **Sets up a clean project folder** — only your project goes in it; roles and skills stay in the skill folder
+5. **Becomes the manager** (CTO or Chef de Projets) in the session you are in
+6. **Opens a room for every agent** — each specialist works in its own session in the sidebar, where you can watch it or talk to it
 
 ```
 You: "I want to build a SaaS platform with user auth, payments, and a mobile app"
 
-IT Workshop → Analyzes scope (large) → Selects 14 agents → Scaffolds workspace
-           → Dispatches CTO as manager → CTO delegates to specialists
+IT Workshop → Analyzes scope (large) → Selects 14 agents → Sets up the project folder
+           → Becomes the CTO → Opens one session per specialist
 ```
 
 ---
@@ -39,21 +39,20 @@ flowchart TB
     Scope -->|Medium 6-12| TeamM[Select balanced team]
     Scope -->|Large 12-24| TeamL[Select full team]
     
-    TeamS --> Scaffold[Create Workspace]
-    TeamM --> Scaffold
-    TeamL --> Scaffold
-    
-    Scaffold -->|2. Build| Workspace[/"Workspace Directory
-    ├── PROJECT-BRIEF.md
-    ├── TEAM.md
-    └── Role folders with SKILL.md"/]
-    
-    Workspace -->|3. Dispatch| Manager{Manager Agent}
-    
-    Manager -->|delegates| Dev[Dev Team]
-    Manager -->|delegates| Sec[Security Team]
-    Manager -->|delegates| Infra[Infrastructure Team]
-    
+    TeamS --> Folder[Set up project folder]
+    TeamM --> Folder
+    TeamL --> Folder
+
+    Folder -->|2. Lead| Manager{This session becomes the manager}
+
+    Manager -->|own session| Dev[Dev agents]
+    Manager -->|own session| Sec[Security agents]
+    Manager -->|own session| Infra[Infrastructure agents]
+
+    Dev -->|report back| Manager
+    Sec -->|report back| Manager
+    Infra -->|report back| Manager
+
     style User fill:#2d9bf0,color:#fff
     style Orchestrator fill:#7c3aed,color:#fff
     style Manager fill:#f59e0b,color:#fff
@@ -153,7 +152,7 @@ flowchart LR
     Launch([Launch]) --> Detect[Detect installed skills]
     Detect --> Map[(skills-map.json\nrole to skills)]
     Map --> Match[Keep the ones installed]
-    Match --> Role[Written into each role's SKILL.md]
+    Match --> Role[Listed per role in TEAM.md]
     Role --> Use[Agents invoke them before working]
 
     style Launch fill:#2d9bf0,color:#fff
@@ -214,95 +213,54 @@ Full list per source: [`skills/README.md`](skills/README.md). The MIT license of
 
 ---
 
-## Manager Dispatch
+## Manager and Agent Rooms
 
 ```mermaid
 flowchart TD
-    Size{Project Size} -->|Large + CTO selected| CTO[CTO / DSI manages]
-    Size -->|Otherwise| CDP[Chef de Projets manages]
+    Size{Project Size} -->|Large + CTO selected| CTO[CTO / DSI]
+    Size -->|Otherwise| CDP[Chef de Projets]
 
-    CTO --> Mgr[Manager dispatched as subagent]
+    CTO --> Mgr[Your session = the manager]
     CDP --> Mgr
 
-    Mgr --> Brief[Reads PROJECT-BRIEF.md and TEAM.md]
-    Brief --> Work[Dispatches specialists as needed]
+    Mgr --> R1[Room: Frontend]
+    Mgr --> R2[Room: Backend]
+    Mgr --> R3[Room: QA ...]
 
-    Work --> S1[Specialist 1]
-    Work --> S2[Specialist 2]
-    Work --> S3[Specialist N]
-
-    S1 -->|Reports back| Report[Manager consolidates]
-    S2 -->|Reports back| Report
-    S3 -->|Reports back| Report
-    Report -->|Summary| You([You])
+    R1 -->|Reports back| Mgr
+    R2 -->|Reports back| Mgr
+    R3 -->|Reports back| Mgr
+    Mgr -->|Updates| You([You])
 
     style CTO fill:#f59e0b,color:#fff
     style CDP fill:#f59e0b,color:#fff
     style Mgr fill:#7c3aed,color:#fff
-    style Report fill:#7c3aed,color:#fff
     style You fill:#2d9bf0,color:#fff
-    style S1 fill:#10b981,color:#fff
-    style S2 fill:#6366f1,color:#fff
-    style S3 fill:#ef4444,color:#fff
+    style R1 fill:#10b981,color:#fff
+    style R2 fill:#6366f1,color:#fff
+    style R3 fill:#ef4444,color:#fff
 ```
 
-The manager agent is launched with:
-- The project brief (scope, description, team)
-- Each specialist's SKILL.md (their capabilities and templates)
-- Authority to dispatch specialists as subagents
-
-**You never talk to individual agents.** The manager handles all delegation and coordination.
+- The session where you launch the skill **is the manager**. You talk to it there.
+- Every specialist gets **its own session**, named `<Role> — <project>`. In the Claude Code desktop app these appear under the manager's session in the sidebar, so each agent has its own room you can open.
+- Where separate sessions are not available, agents run as subagents inside the manager's session instead.
+- Specialists report to the manager. The manager reviews, sends work back if needed, and keeps you updated.
 
 ---
 
-## Workspace Structure
+## Project Folder
 
-When IT Workshop runs, it creates this structure:
+The project folder contains your project and nothing else:
 
 ```
 my-project/
-├── PROJECT-BRIEF.md          # Project scope, description, team overview
-├── TEAM.md                   # Team roster with roles and responsibilities
-│
-├── direction & management/
-│   ├── CTO - DSI/
-│   │   └── SKILL.md          # Agent definition + templates
-│   ├── CHEF DE PROJECTS/
-│   │   └── SKILL.md
-│   └── ...
-│
-├── DEVELOPPEMENT/
-│   ├── TECH LEAD/
-│   │   └── SKILL.md
-│   ├── FRONTEND/
-│   │   └── SKILL.md
-│   ├── BACKEND/
-│   │   └── SKILL.md
-│   └── ...
-│
-├── CYBERSECURITE/
-│   ├── RSSI - CISCO/
-│   │   └── SKILL.md
-│   ├── PENTESTER/
-│   │   └── SKILL.md
-│   └── ...
-│
-└── INFRASTRUCTURE  & SUPPORT/
-    ├── SYSADMIN/
-    │   └── SKILL.md
-    ├── COUD ENGINEER/
-    │   └── SKILL.md
-    └── ...
+├── .workshop/
+│   ├── PROJECT-BRIEF.md      # Scope, description, manager
+│   └── TEAM.md               # Who is on the team, their role file and skills
+└── ...                       # Your project: code, docs, assets
 ```
 
-Each agent's `SKILL.md` contains:
-- **Identity** — who they are and what they own
-- **Responsibilities** — specific duties and deliverables  
-- **Escalation rules** — who they report to
-- **Workflow** — step-by-step working process
-- **Templates** — ready-to-use document templates
-- **Tools & scripts** — commands and utilities they use
-- **Skills** — the installed skills this role must invoke, added at launch
+Role definitions and skills are never copied into the project. Each agent reads its role from `it-workshop/roles/` and its skills from where they are installed (or from `it-workshop/skills/`).
 
 ---
 
@@ -340,8 +298,8 @@ The skill will:
 1. Ask you to confirm the project name and description
 2. Show you the proposed team for approval
 3. Detect your installed skills and assign them to roles
-4. Scaffold the full workspace
-5. Launch the manager agent
+4. Set up the project folder
+5. Become the manager and open a session for each agent
 
 ---
 
@@ -360,7 +318,7 @@ The skill will:
 | Security | Security Engineer |
 | Infrastructure | Cloud Engineer, Support N1/N2 |
 
-**Then:** CTO is dispatched as manager → delegates architecture to Tech Lead, UI to UX/UI Designer, API to Backend Developer, mobile to Mobile Dev, etc.
+**Then:** the session becomes the CTO → delegates architecture to Tech Lead, UI to UX/UI Designer, API to Backend Developer, mobile to Mobile Dev, etc.
 
 ---
 
@@ -385,22 +343,21 @@ it-workshop/
 │   ├── PROJECT-BRIEF.md        # Project brief template
 │   └── TEAM.md                 # Team roster template
 └── scripts/
-    ├── scaffold.sh             # Workspace scaffolding script
     ├── detect-skills.sh        # Lists installed skills
     └── install-skills.sh       # Installs the bundled skills
 ```
 
-24 role definitions + orchestrator + registry + skill map + 2 templates + 3 scripts + 72 bundled skills.
+24 role definitions + orchestrator + registry + skill map + 2 templates + 2 scripts + 72 bundled skills.
 
 ---
 
 ## How It's Built
 
-- **Orchestrator pattern** — one SKILL.md entry point that reads the registry, selects roles, and dispatches the manager
+- **Orchestrator pattern** — one SKILL.md entry point that reads the registry, selects roles, becomes the manager and opens a session per agent
 - **Modular roles** — each of the 24 roles is an independent `.md` file with its own agent definition
 - **JSON registry** — `registry.json` holds all role metadata (keywords, department, min_size, manager priority) for programmatic selection
 - **Skill map** — `skills-map.json` links each role to the skills it should use; detection keeps only the installed ones
-- **Bash scaffold** — `scaffold.sh` creates the workspace directory structure using the registry
+- **Clean project folder** — only a small `.workshop/` folder (brief and team) is added next to your project files
 - **Template system** — `PROJECT-BRIEF.md` and `TEAM.md` use `{{PLACEHOLDER}}` substitution
 
 ---

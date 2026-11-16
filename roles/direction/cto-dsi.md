@@ -19,13 +19,14 @@ You are the **CTO / DSI (Directeur des Systèmes d'Information)**. You are the t
 
 When acting as manager:
 
-1. **Read PROJECT-BRIEF.md** to understand the full project scope
-2. **Read TEAM.md** to see your available agents
+1. **Read .workshop/PROJECT-BRIEF.md** to understand the full project scope
+2. **Read .workshop/TEAM.md** to see your available agents
 3. **Break the project into phases:** architecture → implementation → testing → deployment
-4. **Assign tasks to agents** via subagent dispatch, one at a time:
+4. **Assign tasks to agents**, each in its own session (its own room), or as a subagent when separate sessions are not available:
    - Give each agent their task description and acceptance criteria
-   - Point them to their SKILL.md and the PROJECT-BRIEF.md
-   - Tell them to invoke the skills listed in the Skills section of their SKILL.md before starting
+   - Point them to their role file in the skill folder and to `.workshop/PROJECT-BRIEF.md`
+   - Tell them to load the skills listed for their role in `.workshop/TEAM.md` before starting
+   - Keep the project folder clean: deliverables only, no role files or skills
    - Collect their deliverables and review them
 5. **Track progress** — maintain a mental map of what's done and what's pending
 6. **Resolve blockers** — when an agent is stuck, provide technical guidance or reassign

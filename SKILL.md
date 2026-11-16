@@ -1,11 +1,11 @@
 ---
 name: it-workshop
-description: "Use when the user wants to spin up a multi-agent IT project team. Takes a project description, selects the right roles from 24 IT specialists across 4 departments, creates a workspace with agent definitions, and dispatches a manager agent to orchestrate the team."
+description: "Use when the user wants to spin up a multi-agent IT project team. Takes a project description, selects the right roles from 24 IT specialists across 4 departments, sets up the project folder, acts as the manager, and gives every specialist its own session."
 ---
 
 # IT Workshop — Project Team Generator
 
-You generate a complete multi-agent IT project workspace. The user describes their project, you pick the right team, scaffold the workspace, and hand control to a manager agent who orchestrates the specialists.
+You run a multi-agent IT project team. The user describes their project, you pick the right team, set up the project folder, become the manager, and give every specialist its own session to work in.
 
 ## Step 1: Project Intake
 
@@ -60,7 +60,7 @@ Show the user the proposed team as a table:
 | Backend Developer | Développement | API and business logic |
 | ... | ... | ... |
 
-Ask: **"This is your team. Want to add or remove anyone before I set up the workspace?"**
+Ask: **"This is your team. Want to add or remove anyone before I set up the project?"**
 
 Wait for confirmation. Adjust if they request changes.
 
@@ -84,77 +84,71 @@ Every agent on the team works with the skills installed in this session, so find
 
 To install the bundled skills permanently, the user can run `bash <skill-dir>/scripts/install-skills.sh` (it never overwrites a skill that already exists).
 
-## Step 4: Create Workspace
+## Step 4: Create the Project Folder
 
-Once confirmed, scaffold the workspace:
+The project folder holds **the project only**. Role definitions and skills stay in this skill's folder and are read from there. Never copy a role file, a SKILL.md or a skill into the project.
 
-```bash
-bash <skill-dir>/scripts/scaffold.sh "<project-name>" "<comma-separated-slugs>"
-```
+1. Create `<current-folder>/<project-name>/`. This is where the team's deliverables go (code, docs, assets).
+2. Create `<current-folder>/<project-name>/.workshop/` with two small files, so the team can be resumed in a later session:
 
-This creates `~/<project-name>/` with a subdirectory for each role (using the exact folder names from the original workshop structure).
-
-### Populate role workspaces
-
-For each selected role, read its definition and write it as the role's SKILL.md:
-
-```bash
-# For each role, get its department and slug, then:
-cat <skill-dir>/roles/<department>/<slug>.md
-# Write the content to:
-# ~/<project-name>/<role-folder>/SKILL.md
-```
-
-The `<role-folder>` is the `folder` field from the registry (e.g., `DEVELOPPEMENT/FRONTEND`).
-
-Then append the role's skill list from Step 3 to the end of that SKILL.md:
-
-```markdown
-## Skills
-
-Before starting any task, load each skill below that applies to it, and follow it:
-
-- `<skill-name>` (installed) — invoke it with the Skill tool. <one line: when this role uses it>
-- `<skill-name>` (bundled) — read `<absolute path to its SKILL.md>` and follow it. <one line: when this role uses it>
-```
-
-If a role has no detected skills, write `No extra skills detected — work from this role definition.` under the heading.
-
-### Generate project documents
-
-**PROJECT-BRIEF.md** — Read `<skill-dir>/templates/PROJECT-BRIEF.md` and fill in:
+**`.workshop/PROJECT-BRIEF.md`** — Read `<skill-dir>/templates/PROJECT-BRIEF.md` and fill in:
 - `{{PROJECT_NAME}}` → the project name
 - `{{DATE}}` → today's date (YYYY-MM-DD)
 - `{{PROJECT_SIZE}}` → small / medium / large
 - `{{MANAGER_NAME}}` → name of the selected manager
 - `{{PROJECT_DESCRIPTION}}` → the user's project description
 
-Write to `~/<project-name>/PROJECT-BRIEF.md`
-
-**TEAM.md** — Read `<skill-dir>/templates/TEAM.md` and fill in:
+**`.workshop/TEAM.md`** — Read `<skill-dir>/templates/TEAM.md` and fill in:
 - `{{PROJECT_NAME}}` → the project name
 - `{{MANAGER_NAME}}` → name of the selected manager
-- `{{TEAM_TABLE}}` → markdown table of all selected roles with columns: Role, Department, Slug, Skills (the role's skill list from Step 3, comma-separated)
+- `{{TEAM_TABLE}}` → markdown table of all selected roles with columns: Role, Department, Role file (absolute path `<skill-dir>/roles/<department>/<slug>.md`), Skills (the role's list from Step 3: `name (installed)` or `name (bundled: <absolute path to its SKILL.md>)`)
 
-Write to `~/<project-name>/TEAM.md`
+Create nothing else: no role folders, no `templates/` or `scripts/` folders.
 
-## Step 5: Dispatch the Manager
+## Step 5: Become the Manager
 
-Launch the manager agent as a subagent using the Agent tool:
+**You are the manager.** Do not dispatch the manager as a subagent: this session is the manager's room, and the user talks to the manager here.
+
+1. Read the manager's role file `<skill-dir>/roles/direction/<manager-slug>.md` and adopt it.
+2. Load the manager's own skills from Step 3.
+3. Break the project into tasks: description, acceptance criteria, dependencies, assigned role.
+4. Show the plan to the user in a few lines, then start dispatching.
+
+## Step 6: Give Every Agent Its Own Room
+
+Each specialist works in **its own separate session**, so the user can open any agent's room from the sidebar, read what it is doing and talk to it directly.
+
+**How to dispatch a specialist:**
+
+1. **If this session can start a separate (nested) session** — a task that opens as its own session under this one in the sidebar and reports back — use that. One session per specialist, started in the project folder.
+2. **Otherwise** use the Agent tool (a subagent). Say once to the user that agents are running inside this session because separate sessions are not available here.
+
+Never start two rooms for the same role: reuse the role's existing session for its next task.
+
+**Name every room** `<Role name> — <project-name>` (for example `Frontend — hello-page`).
+
+**Give every room this prompt:**
 
 ```
-Agent({
-  name: "<manager-slug>",
-  description: "Project manager for <project-name>",
-  prompt: "<contents of the manager's SKILL.md>\n\n---\n\nYou are managing the project '<project-name>'.\n\n<contents of PROJECT-BRIEF.md>\n\n<contents of TEAM.md>\n\nYour workspace is at ~/<project-name>/. Each team member has their own folder with a SKILL.md defining their role. When you need a specialist, dispatch them as a subagent using the Agent tool — read their SKILL.md and include it in full in the prompt so they know their role and which skills to use. Each SKILL.md ends with a Skills section: tell every specialist to load the skills that apply to their task before they start (Skill tool for installed ones, reading the SKILL.md file for bundled ones), and use your own listed skills the same way.\n\nStart by reading the project brief, then create a plan and begin dispatching agents to execute it. Report progress back to the user."
-})
+You are the <Role name> on the project "<project-name>".
+
+1. Read your role definition and adopt it: <skill-dir>/roles/<department>/<slug>.md
+2. Read the brief and the team: <project-folder>/.workshop/PROJECT-BRIEF.md and TEAM.md
+3. Load your skills before you start:
+   - <skill-name> (installed) → invoke it with the Skill tool
+   - <skill-name> (bundled) → read <absolute path to its SKILL.md> and follow it
+4. Your task: <task description>
+   Done when: <acceptance criteria>
+
+Write deliverables into <project-folder>/ only. Do not copy role files or skills into it.
+When finished, report back to the manager: what you did, files created or changed, anything blocking.
 ```
 
-The user now talks to the manager. The manager:
-- Reads the project brief
-- Breaks down work into tasks
-- Dispatches specialist agents (reading each one's SKILL.md, including its Skills section)
-- Collects results and reports back
+**Then, as manager:**
+- Dispatch independent tasks at the same time, dependent ones in order.
+- When a room reports back, review the deliverable against its acceptance criteria. Send it back to the same room if it falls short.
+- Keep the user updated: what is done, what is running, what is next.
+- Only the manager talks across roles. Specialists report to the manager, not to each other.
 
 ## Role Registry Reference
 

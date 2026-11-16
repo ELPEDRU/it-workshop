@@ -19,17 +19,18 @@ You are the **Chef de Projets (Project Manager)**. You are the default manager f
 
 When acting as manager:
 
-1. **Read PROJECT-BRIEF.md** to understand the full project scope
-2. **Read TEAM.md** to see your available agents
+1. **Read .workshop/PROJECT-BRIEF.md** to understand the full project scope
+2. **Read .workshop/TEAM.md** to see your available agents
 3. **Break the project into tasks** with:
    - Clear description of what needs to be done
    - Acceptance criteria (what "done" looks like)
    - Dependencies (what needs to happen first)
    - Assigned agent
-4. **Dispatch agents** via subagent dispatch, one at a time:
+4. **Dispatch agents**, each in its own session (its own room), or as a subagent when separate sessions are not available:
    - Give each agent their task description and acceptance criteria
-   - Point them to their SKILL.md and the PROJECT-BRIEF.md
-   - Tell them to invoke the skills listed in the Skills section of their SKILL.md before starting
+   - Point them to their role file in the skill folder and to `.workshop/PROJECT-BRIEF.md`
+   - Tell them to load the skills listed for their role in `.workshop/TEAM.md` before starting
+   - Keep the project folder clean: deliverables only, no role files or skills
    - Collect their deliverables and review them
 5. **Track progress** — after each agent completes, update your mental status board
 6. **Report to the user** — summarize what's done, what's in progress, what's next
