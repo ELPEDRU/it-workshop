@@ -2,7 +2,7 @@
 
 ![Claude Code Skill](https://img.shields.io/badge/Claude%20Code-Skill-7c3aed) ![Roles](https://img.shields.io/badge/roles-24-10b981) ![Departments](https://img.shields.io/badge/departments-4-2d9bf0) ![License](https://img.shields.io/badge/license-MIT-f59e0b)
 
-> **Spin up an entire IT project team in seconds.** Describe your project, and IT Workshop picks the right specialists from 24 agent roles, becomes the manager, and gives every agent its own session to work in.
+> **Spin up an entire IT project team in seconds.** Describe your project, and IT Workshop picks the smallest team that can deliver it from 24 agent roles, and runs it in the cheapest mode that fits.
 
 A Claude Code skill that generates multi-agent IT project teams.
 
@@ -12,54 +12,53 @@ A Claude Code skill that generates multi-agent IT project teams.
 
 You tell it what you're building. It does the rest:
 
-1. **Analyzes your project scope** — small, medium, or large
-2. **Picks only the roles you need** from 24 IT specialists across 4 departments
-3. **Detects every skill installed in your session** and hands each role the ones that fit its job
-4. **Sets up a clean project folder** — only your project goes in it; roles and skills stay in the skill folder
-5. **Becomes the manager** (CTO or Chef de Projets) in the session you are in
-6. **Opens a room for every agent** — each specialist works in its own session in the sidebar, where you can watch it or talk to it
+1. **Sizes your project** — small, medium, or large
+2. **Picks only the roles you need** from 24 IT specialists across 4 departments, and tells you who was left out and why
+3. **Shows you the plan and its cost** — how many agents and sessions — before anything starts
+4. **Runs it in the right mode** — solo for small jobs, a managed team for bigger ones, a room per agent if you ask
+5. **Keeps your project folder clean** — roles and skills stay in the skill folder
+6. **Counts a task as done only with evidence** — files changed and a check that it works
 
 ```
 You: "I want to build a SaaS platform with user auth, payments, and a mobile app"
 
-IT Workshop → Analyzes scope (large) → Selects 14 agents → Sets up the project folder
-           → Becomes the CTO → Opens one session per specialist
+IT Workshop → Sizes it (large) → Proposes 8 agents, asks you to confirm
+           → Becomes the CTO → Dispatches specialists, 3 at a time
 ```
 
 ---
 
-## Architecture
+## Modes
+
+Built to spend as few tokens as possible. The mode follows the project size, and you can override it.
+
+| Mode | Used for | How it runs | Cost |
+|------|----------|-------------|------|
+| **Solo** | Small projects | One session does the work itself, wearing the right role | Lowest |
+| **Team** | Medium and large projects | The session is the manager and dispatches subagents, 3 at a time | Medium |
+| **Rooms** | Only when you ask | Every agent gets its own visible session in the sidebar | Highest |
 
 ```mermaid
 flowchart TB
-    User([You]) -->|Describe project| Orchestrator[IT Workshop Orchestrator]
-    
-    Orchestrator -->|1. Analyze| Scope{Project Size?}
-    Scope -->|Small 3-5| TeamS[Select minimal team]
-    Scope -->|Medium 6-12| TeamM[Select balanced team]
-    Scope -->|Large 12-24| TeamL[Select full team]
-    
-    TeamS --> Folder[Set up project folder]
-    TeamM --> Folder
-    TeamL --> Folder
-
-    Folder -->|2. Lead| Manager{This session becomes the manager}
-
-    Manager -->|own session| Dev[Dev agents]
-    Manager -->|own session| Sec[Security agents]
-    Manager -->|own session| Infra[Infrastructure agents]
-
-    Dev -->|report back| Manager
-    Sec -->|report back| Manager
-    Infra -->|report back| Manager
+    User([You]) -->|Describe project| Size{Project size?}
+    Size -->|Small| Solo[Solo: one session, 1-2 roles]
+    Size -->|Medium, cap 5| Team[Team: manager + subagents]
+    Size -->|Large, cap 8| Team
+    Team -.->|if you ask| Rooms[Rooms: one session per agent]
+    Solo --> Confirm[Confirm team and cost]
+    Team --> Confirm
+    Rooms --> Confirm
+    Confirm --> Work[Work, with evidence for every task]
 
     style User fill:#2d9bf0,color:#fff
-    style Orchestrator fill:#7c3aed,color:#fff
-    style Manager fill:#f59e0b,color:#fff
-    style Dev fill:#10b981,color:#fff
-    style Sec fill:#ef4444,color:#fff
-    style Infra fill:#6366f1,color:#fff
+    style Solo fill:#10b981,color:#fff
+    style Team fill:#7c3aed,color:#fff
+    style Rooms fill:#f59e0b,color:#fff
 ```
+
+Other token savers: the skill's own instructions are short and load the team rules only when a team is used, agents receive file paths instead of pasted content, each agent loads at most 2 skills and only when its task needs them, and reports are capped at 10 lines.
+
+Say **"preview"** to see the proposed team and cost without creating anything.
 
 ---
 
@@ -115,64 +114,25 @@ Agents are organized into **4 departments**. The orchestrator picks only what yo
 
 ## How Team Selection Works
 
-```mermaid
-flowchart LR
-    Desc[Project Description] --> KW[Keyword Matching]
-    KW --> Registry[(registry.json\n24 roles)]
-    Registry --> Filter[Filter by min_size]
-    Filter --> Check{Has manager?\nHas dev?}
-    Check -->|No manager| AddMgr[Add Chef de Projets]
-    Check -->|No dev| AddDev[Add Frontend or Backend]
-    Check -->|Yes| Team[Final Team]
-    AddMgr --> Team
-    AddDev --> Team
-    
-    style Desc fill:#2d9bf0,color:#fff
-    style Registry fill:#7c3aed,color:#fff
-    style Team fill:#10b981,color:#fff
-```
+The skill reads one small table, [`roles/roles.tsv`](roles/roles.tsv): one line per role with its keywords and the smallest project size it makes sense for. Keywords are hints, not rules: a role joins only if the project really needs its job, you did not rule it out ("no mobile app"), and the team is still under its cap. There is always one manager and one development role.
 
-Each role in the registry has **keywords** that map to project descriptions:
-
-- Mention "mobile app" → `mobile-dev` gets selected
-- Mention "authentication" or "security" → `security-engineer` joins
-- Mention "cloud" or "AWS" → `cloud-engineer` is in
-- Mention "CI/CD" or "deployment" → `devops-sre` activated
-
-The orchestrator always ensures at least **one manager** and **one dev role** are present.
+Before starting, you see who was picked, who was left out, and why. You can force a role in or out.
 
 ---
 
-## Skill Detection
+## Skills
 
-IT Workshop does not work alone. At launch it lists every skill available in the session, then gives each agent the ones that match its role.
+Each role has a short priority list of skills in [`roles/skills.txt`](roles/skills.txt). An agent uses the ones that are installed in your session, or the bundled copy when they are not, and loads at most 2 per task.
 
-```mermaid
-flowchart LR
-    Launch([Launch]) --> Detect[Detect installed skills]
-    Detect --> Map[(skills-map.json\nrole to skills)]
-    Map --> Match[Keep the ones installed]
-    Match --> Role[Listed per role in TEAM.md]
-    Role --> Use[Agents invoke them before working]
-
-    style Launch fill:#2d9bf0,color:#fff
-    style Map fill:#7c3aed,color:#fff
-    style Use fill:#10b981,color:#fff
-```
-
-| Role | Example skills it picks up when installed |
-|------|-------------------------------------------|
-| Managers | `superpowers:brainstorming`, `superpowers:writing-plans`, `superpowers:subagent-driven-development` |
-| Tech Lead | `engineering:architecture`, `engineering:code-review`, `pr-feedback-quality-gate` |
-| UX/UI Designer | `ui-ux-pro-max`, `high-end-visual-design`, `motion-design` |
-| Frontend | `shadcn-ui`, the `gsap-*` suite, `threejs`, `vercel:nextjs` |
+| Role | Example skills |
+|------|----------------|
+| Managers | `superpowers:writing-plans`, `superpowers:dispatching-parallel-agents` |
+| Tech Lead | `engineering:architecture`, `engineering:code-review` |
+| UX/UI Designer | `frontend-design`, `ui-ux-pro-max`, `high-end-visual-design` |
+| Frontend | `frontend-patterns`, `shadcn-ui`, `vercel:nextjs`, the `gsap-*` suite |
 | Backend | `backend-patterns`, `api-review`, `vercel:vercel-functions` |
 | QA / Testeur | `playwright-dev`, `tdd-workflow`, `engineering:testing-strategy` |
-| DevOps / SRE | `vercel:deploy`, `vercel:deployments-cicd`, `engineering:deploy-checklist` |
-| Security roles | `security-audit`, `security-review`, `engineering:incident-response` |
-| Everyone | `superpowers:verification-before-completion`, `karpathy-guidelines`, `coding-standards` |
-
-The full map covers all 24 roles and lives in [`roles/skills-map.json`](roles/skills-map.json). Skills that are installed but not in the map are matched to roles by their description.
+| Security roles | `security-review`, `engineering:incident-response` |
 
 ### Bundled skills
 
@@ -213,38 +173,27 @@ Full list per source: [`skills/README.md`](skills/README.md). The MIT license of
 
 ---
 
-## Manager and Agent Rooms
+## Team and Rooms
 
 ```mermaid
-flowchart TD
-    Size{Project Size} -->|Large + CTO selected| CTO[CTO / DSI]
-    Size -->|Otherwise| CDP[Chef de Projets]
+flowchart LR
+    You([You]) <--> Mgr[Manager = your session]
+    Mgr -->|task + done-when| A1[Specialist]
+    Mgr -->|task + done-when| A2[Specialist]
+    A1 -->|report + evidence| Mgr
+    A2 -->|report + evidence| Mgr
+    Mgr --> State[(STATE.md)]
 
-    CTO --> Mgr[Your session = the manager]
-    CDP --> Mgr
-
-    Mgr --> R1[Room: Frontend]
-    Mgr --> R2[Room: Backend]
-    Mgr --> R3[Room: QA ...]
-
-    R1 -->|Reports back| Mgr
-    R2 -->|Reports back| Mgr
-    R3 -->|Reports back| Mgr
-    Mgr -->|Updates| You([You])
-
-    style CTO fill:#f59e0b,color:#fff
-    style CDP fill:#f59e0b,color:#fff
-    style Mgr fill:#7c3aed,color:#fff
     style You fill:#2d9bf0,color:#fff
-    style R1 fill:#10b981,color:#fff
-    style R2 fill:#6366f1,color:#fff
-    style R3 fill:#ef4444,color:#fff
+    style Mgr fill:#7c3aed,color:#fff
+    style A1 fill:#10b981,color:#fff
+    style A2 fill:#10b981,color:#fff
 ```
 
-- The session where you launch the skill **is the manager**. You talk to it there.
-- Every specialist gets **its own session**, named `<Role> — <project>`. In the Claude Code desktop app these appear under the manager's session in the sidebar, so each agent has its own room you can open.
-- Where separate sessions are not available, agents run as subagents inside the manager's session instead.
-- Specialists report to the manager. The manager reviews, sends work back if needed, and keeps you updated.
+- In team and rooms mode, the session where you launch the skill **is the manager**. You talk to it there.
+- Every task has one owner, a "done when", and the files it may touch. Parallel tasks never share files.
+- Specialists report in 10 lines or fewer, with evidence. No evidence means the task goes back.
+- In rooms mode each specialist runs in its own session named `<Role> — <project>`, which the Claude Code desktop app lists under the manager's session. Where that is not available, agents run as subagents.
 
 ---
 
@@ -255,8 +204,9 @@ The project folder contains your project and nothing else:
 ```
 my-project/
 ├── .workshop/
-│   ├── PROJECT-BRIEF.md      # Scope, description, manager
-│   └── TEAM.md               # Who is on the team, their role file and skills
+│   ├── PROJECT-BRIEF.md      # Scope, description, shared contracts
+│   ├── TEAM.md               # Who is on the team, their role file and skills
+│   └── STATE.md              # Tasks, status and evidence (lets you resume later)
 └── ...                       # Your project: code, docs, assets
 ```
 
@@ -295,11 +245,12 @@ Or describe a project and the skill triggers automatically:
 ```
 
 The skill will:
-1. Ask you to confirm the project name and description
-2. Show you the proposed team for approval
-3. Detect your installed skills and assign them to roles
-4. Set up the project folder
-5. Become the manager and open a session for each agent
+1. Size the project and propose a team
+2. Show you the mode and the cost, and wait for your yes
+3. Set up the project folder
+4. Do the work (solo) or manage the team
+
+Useful things to say: `preview`, `no <role>`, `add <role>`, `max 3 agents`, `use rooms`, `resume`.
 
 ---
 
@@ -309,16 +260,15 @@ The skill will:
 > "Build an e-commerce marketplace with vendor management, payment processing, 
 > real-time inventory, and a mobile app"
 
-**IT Workshop selects (Large — 14 agents):**
+**IT Workshop proposes (large, team mode, capped at 8):**
 
-| Department | Agents Selected |
-|-----------|----------------|
-| Direction | CTO/DSI, Chef de Projets, Scrum Master |
-| Development | Tech Lead, UX/UI, Frontend, Backend, Mobile Dev, DevOps/SRE, QA, DBA |
+| Department | Agents |
+|-----------|--------|
+| Direction | CTO/DSI |
+| Development | Tech Lead, UX/UI, Frontend, Backend, Mobile Dev, DBA |
 | Security | Security Engineer |
-| Infrastructure | Cloud Engineer, Support N1/N2 |
 
-**Then:** the session becomes the CTO → delegates architecture to Tech Lead, UI to UX/UI Designer, API to Backend Developer, mobile to Mobile Dev, etc.
+Left out: DevOps and QA (covered by Tech Lead and Backend for a first version). Add them back with `add devops-sre`.
 
 ---
 
@@ -326,39 +276,35 @@ The skill will:
 
 ```
 it-workshop/
-├── SKILL.md                    # Main orchestrator entry point
-├── README.md                   # You are here
-├── LICENSE                     # MIT
+├── SKILL.md                    # Short orchestrator: intake, sizing, modes
+├── references/
+│   └── team-mode.md            # Manager rules, read only in team/rooms mode
 ├── roles/
-│   ├── registry.json           # All 24 roles with keywords & metadata
-│   ├── skills-map.json         # Which skills each role uses
+│   ├── roles.tsv               # All 24 roles, one line each
+│   ├── skills.txt              # Skills per role, in priority order
 │   ├── direction/              # 4 management role definitions
 │   ├── developpement/          # 8 development role definitions
 │   ├── cybersecurite/          # 6 security role definitions
 │   └── infrastructure/         # 6 infrastructure role definitions
 ├── skills/                     # Bundled third-party skills (own licenses)
-│   ├── index.json              # Name → path of every bundled skill
-│   └── README.md               # Credits and licenses
-├── templates/
-│   ├── PROJECT-BRIEF.md        # Project brief template
-│   └── TEAM.md                 # Team roster template
+├── templates/                  # PROJECT-BRIEF.md and TEAM.md
 └── scripts/
-    ├── detect-skills.sh        # Lists installed skills
+    ├── team-skills.sh          # Skills for the selected roles
+    ├── check.sh                # Validates the role table and skill list
     └── install-skills.sh       # Installs the bundled skills
 ```
 
-24 role definitions + orchestrator + registry + skill map + 2 templates + 2 scripts + 72 bundled skills.
+To add a role: add a line to `roles/roles.tsv`, a line to `roles/skills.txt`, and a role file, then run `bash scripts/check.sh`.
 
 ---
 
 ## How It's Built
 
-- **Orchestrator pattern** — one SKILL.md entry point that reads the registry, selects roles, becomes the manager and opens a session per agent
-- **Modular roles** — each of the 24 roles is an independent `.md` file with its own agent definition
-- **JSON registry** — `registry.json` holds all role metadata (keywords, department, min_size, manager priority) for programmatic selection
-- **Skill map** — `skills-map.json` links each role to the skills it should use; detection keeps only the installed ones
-- **Clean project folder** — only a small `.workshop/` folder (brief and team) is added next to your project files
-- **Template system** — `PROJECT-BRIEF.md` and `TEAM.md` use `{{PLACEHOLDER}}` substitution
+- **Short entry point** — `SKILL.md` stays small because it is loaded on every launch; team rules live in a reference file read only when needed
+- **Plain tables instead of JSON** — no `jq`, works in Git Bash on Windows, and one `grep` returns only what the team needs
+- **Scale to the job** — solo, team or rooms, chosen by project size
+- **State on disk** — `.workshop/STATE.md` tracks tasks and evidence, so a project can be resumed
+- **Clean project folder** — only `.workshop/` is added next to your files
 
 ---
 

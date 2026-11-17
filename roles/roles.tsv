@@ -1,0 +1,25 @@
+# slug | name | department | min_size | manager | keywords
+cto-dsi | CTO / DSI | direction | large | manager | architecture, strategy, tech stack, enterprise, large scale
+responsable-si | Responsable SI | direction | large | - | IT operations, vendor, procurement, IT planning
+chef-de-projets | Chef de Projets | direction | small | manager | project, planning, timeline, coordination, management
+scrum-master | Scrum Master | direction | medium | - | agile, scrum, sprint, kanban, standup
+tech-lead | Tech Lead | developpement | medium | - | code review, architecture, patterns, standards
+ux-ui-designer | UX/UI Designer | developpement | small | - | design, UI, UX, wireframe, mockup, figma, user interface
+frontend | Frontend Developer | developpement | small | - | frontend, react, vue, angular, CSS, HTML, responsive, web
+backend | Backend Developer | developpement | small | - | backend, API, REST, GraphQL, server, auth, business logic
+mobile-dev | Mobile Developer | developpement | small | - | mobile, iOS, android, react native, flutter, app
+devops-sre | DevOps / SRE | developpement | medium | - | devops, CI/CD, docker, kubernetes, deploy, monitoring, pipeline
+qa-testeur | QA / Testeur | developpement | medium | - | test, QA, quality, regression, automation test
+dba | DBA | developpement | medium | - | database, SQL, migration, optimization, postgres, mysql, mongo
+rssi-ciso | RSSI / CISO | cybersecurite | large | - | security policy, risk assessment, CISO, security strategy
+security-engineer | Security Engineer | cybersecurite | medium | - | hardening, WAF, encryption, DevSecOps, security implementation
+soc-analyst | SOC Analyst | cybersecurite | large | - | SIEM, monitoring, alert, SOC, log analysis
+pentester | Pentester | cybersecurite | medium | - | pentest, vulnerability, penetration test, security audit, OWASP
+grc-compliance | GRC / Compliance | cybersecurite | medium | - | compliance, RGPD, GDPR, ISO 27001, audit, regulation
+incident-response | Incident Response | cybersecurite | large | - | incident, forensics, crisis, breach, response plan
+admin-reseau | Administrateur Réseau | infrastructure | medium | - | network, VPN, VLAN, firewall, routing, switching
+sysadmin | Sysadmin | infrastructure | medium | - | server, Active Directory, backup, virtualization, linux admin, windows server
+cloud-engineer | Cloud Engineer | infrastructure | medium | - | cloud, AWS, Azure, GCP, terraform, infrastructure as code
+support-n1-n2 | Support N1/N2 | infrastructure | medium | - | helpdesk, ticket, support, user guide, FAQ
+support-n3-expert | Support N3 / Expert Technique | infrastructure | large | - | escalation, advanced troubleshooting, expert support, root cause
+technicien-poste | Technicien Poste de Travail | infrastructure | large | - | workstation, imaging, inventory, deployment, desktop

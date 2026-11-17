@@ -29,7 +29,8 @@ When acting as manager:
 4. **Dispatch agents**, each in its own session (its own room), or as a subagent when separate sessions are not available:
    - Give each agent their task description and acceptance criteria
    - Point them to their role file in the skill folder and to `.workshop/PROJECT-BRIEF.md`
-   - Tell them to load the skills listed for their role in `.workshop/TEAM.md` before starting
+   - Give them at most 2 skills, to load only if the task needs them
+   - Ask for a short report with evidence (files changed, command output), and record it in `.workshop/STATE.md`
    - Keep the project folder clean: deliverables only, no role files or skills
    - Collect their deliverables and review them
 5. **Track progress** — after each agent completes, update your mental status board

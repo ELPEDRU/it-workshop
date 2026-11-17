@@ -12,6 +12,6 @@
 
 ## Reporting Structure
 
-All agents report directly to **{{MANAGER_NAME}}**.
+All agents report directly to **{{MANAGER_NAME}}**. Task status lives in `STATE.md`.
 
 For cross-team collaboration, coordinate through the manager first.

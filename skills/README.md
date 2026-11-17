@@ -23,4 +23,4 @@ These skills are **not written by ELPEDRU**. They are copied unchanged from thei
 | [shadcn](https://github.com/shadcn-ui/ui) | shadcn | MIT | `shadcn-ui` |
 | [shadcn-improve](https://github.com/shadcn/improve) | shadcn | MIT | `improve` |
 
-To update a skill, pull it again from its source. To remove one, delete its folder and its entry in `index.json`.
+To update a skill, pull it again from its source. To remove one, delete its folder.
